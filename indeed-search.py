@@ -52,7 +52,7 @@ def main(position, location):
 
     with open('indeed-results.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['JobTitle', 'Company', 'Location', 'PostDate', 'ExtractDate', 'Summary', 'JobUrl'])
+        writer.writerow(['Job Title', 'Company', 'Location', 'Post Date', 'Extract Date', 'Summary', 'Job URL'])
         writer.writerows(records)
 
 # select the position and location desired
