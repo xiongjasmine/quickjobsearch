@@ -49,7 +49,7 @@ def main(position, location):
 
     with open('workopolis-results.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['JobTitle', 'Company', 'Location', 'ExtractDate', 'Summary', 'JobUrl'])
+        writer.writerow(['Job Title', 'Company', 'Location', 'Extract Date', 'Summary', 'Job URL'])
         writer.writerows(records)
 
 # select the position and location desired
