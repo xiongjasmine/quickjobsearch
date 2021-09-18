@@ -1,12 +1,11 @@
 import csv
-from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-# This script scrapes job postings from indeed.com and compiles
-# results into a CSV file
+# This script scrapes job postings from indeed.com workopolis.com
+# and compiles results into a CSV file
 
-# gets an url based on position and location
+# gets an url based on position and location (Indeed)
 def get_url(position, location):
     template = "https://ca.indeed.com/jobs?q={}&l={}"
     template = "https://ca.indeed.com/{}-jobs-in-{}"
@@ -15,9 +14,8 @@ def get_url(position, location):
     url = template.format(position, location)
     return url
 
-# extract job data from a single record
+# extract job data from a single record (Indeed)
 def get_record(card):
-    atag = card.h2.a
     try:
         job_title = card.find('h2', 'jobTitle').text
         if job_title[0:3] == 'new':
@@ -67,7 +65,7 @@ def main(position, location):
 
     with open('indeed-results.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['Job Title', 'Company', 'Location', 'Posted Date', 'Summary', 'Job URL'])
+        writer.writerow(['Job Title', 'Company', 'Location', 'Posted', 'Summary', 'Job URL'])
         writer.writerows(records)
 
 # select the position and location desired
