@@ -1,5 +1,4 @@
 import csv
-from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
@@ -17,14 +16,27 @@ def get_url(position, location):
 # extract job data from a single record
 def get_record(card):
     atag = card.h2
-    job_title = atag.get('title')
-    job_url = 'https://www.workopolis.com' + atag.find('a')['href']
-
-    company = card.find('div', 'JobCard-property').text.strip()
-    job_location = card.find('span', 'JobCard-property').text.strip()
-    job_location = job_location[2:]
-    job_summary = card.find('div', 'JobCard-snippet').text.strip()
-
+    try:
+        job_title = atag.get('title')
+    except AttributeError:
+        job_title = ''
+    try:
+        job_url = 'https://www.workopolis.com' + atag.find('a')['href']
+    except AttributeError:
+        job_url = ''
+    try:
+        company = card.find('div', 'JobCard-property').text.strip()
+    except AttributeError:
+        company = ''
+    try:
+        job_location = card.find('span', 'JobCard-property').text.strip()
+        job_location = job_location[2:]
+    except AttributeError:
+        job_location = ''
+    try:
+        job_summary = card.find('div', 'JobCard-snippet').text.strip()
+    except AttributeError:
+        job_summary = ''
     try:
         post_date = card.find('time', 'JobCard-property JobCard-age').text
     except AttributeError:
@@ -52,7 +64,7 @@ def main(position, location):
 
     with open('workopolis-results.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['Job Title', 'Company', 'Location', 'Posted Date', 'Summary', 'Job URL'])
+        writer.writerow(['Job Title', 'Company', 'Location', 'Posted', 'Summary', 'Job URL'])
         writer.writerows(records)
 
 # select the position and location desired
