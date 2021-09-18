@@ -25,9 +25,12 @@ def get_record(card):
     job_location = job_location[2:]
     job_summary = card.find('div', 'JobCard-snippet').text.strip()
 
-    today = datetime.today().strftime('%Y-%m-%d')
+    try:
+        post_date = card.find('time', 'JobCard-property JobCard-age').text
+    except AttributeError:
+        post_date = ''
 
-    record = (job_title, company, job_location, today, job_summary, job_url)
+    record = (job_title, company, job_location, post_date, job_summary, job_url)
     return record
 
 # creates the list of job openings
@@ -43,13 +46,13 @@ def main(position, location):
             record = get_record(card)
             records.append(record)
         try:
-            url = 'https://www.workopolis.com' + soup.find('a', {'aria-label': 'Next'}).get('href')
+            url = 'https://www.workopolis.com' + soup.find('a', {'title': 'Next'}).get('href')
         except AttributeError:
             break
 
     with open('workopolis-results.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['Job Title', 'Company', 'Location', 'Extract Date', 'Summary', 'Job URL'])
+        writer.writerow(['Job Title', 'Company', 'Location', 'Posted Date', 'Summary', 'Job URL'])
         writer.writerows(records)
 
 # select the position and location desired
