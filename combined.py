@@ -132,8 +132,8 @@ def main(position, location):
     # track job urls to avoid collecting duplicate records
     unique_jobs = set()
     records = []
+    
     url = get_url_indeed(position, location)
-
     while True:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
